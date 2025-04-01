@@ -1,0 +1,14 @@
+# Server 
+server/node_modules
+
+# Client
+client/node_modules
+
+# Environment
+server/.env
+
+# Build 
+dist
+
+
+node_modules
