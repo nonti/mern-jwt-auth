@@ -16,10 +16,14 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({credentials: true}));
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 // API ENDPOINT
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

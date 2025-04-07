@@ -5,9 +5,23 @@ import Login from './pages/Login'
 import ResetPassword from './pages/ResetPassword'
 import Register from './pages/Register'
 import VerifyAccount from './pages/VerifyAccount'
+import { ToastContainer, } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   return (
     <div>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login/>}/>
@@ -15,6 +29,7 @@ const App = () => {
         <Route path='/verify-account' element={<VerifyAccount/>}/>
         <Route path='/reset-password' element={<ResetPassword/>}/>
       </Routes>
+      
     </div>
   )
 }
