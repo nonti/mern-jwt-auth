@@ -5,13 +5,13 @@ import Login from './pages/Login'
 import ResetPassword from './pages/ResetPassword'
 import Register from './pages/Register'
 import VerifyAccount from './pages/VerifyAccount'
-import { ToastContainer, } from 'react-toastify';
+import { Flip, ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   return (
     <div>
       <ToastContainer
-        position="bottom-center"
+        position="top-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -21,6 +21,7 @@ const App = () => {
         draggable
         pauseOnHover
         theme="light"
+        transition={Flip}
       />
       <Routes>
         <Route path='/' element={<Home />} />

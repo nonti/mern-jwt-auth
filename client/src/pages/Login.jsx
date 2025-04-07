@@ -5,12 +5,13 @@ import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../contexts/AppContext';
-import { toast } from 'react-toastify';
+import { Flip, toast } from 'react-toastify';
+import axios from 'axios';
 const Login = () => {
 
   const navigate = useNavigate();
 
-  const { backendUrl, setIsLoggedIn} = useContext(AppContext)
+  const { backendUrl, setIsLoggedIn, getUserInfo} = useContext(AppContext)
 
   const [state, setState] = useState('Sign Up');
   const [formData, setFormData] = useState({
@@ -28,36 +29,56 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
 
     try {
-      let url = state === 'Sign Up' ? backendUrl + 'api/auth/register' : backendUrl + 'api/auth/login'
-      
-        let response = await fetch(url, {
-          method: 'POST',
-          headers:{
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData)
-        })
+    e.preventDefault();
+      axios.defaults.withCredentials = true;
 
-        if(!response.ok){
-          const errorData = await response.json()
-          toast.error(errorData.message || `HTTP error! status: ${response.status} `)
-          return;
-        }
+     if(state === 'Sign up'){
+      const {data} = await axios.post(backendUrl + 'api/auth/register', {formData})
 
-        const data = await response.json();
-        if(data.success){
-          setIsLoggedIn(true)
-          navigate('/')
-        }else{
-          toast.error(data.message)
-        }
+      if(data.success){
+        setIsLoggedIn(true);
+        getUserInfo();
+        navigate('/')
+      }else{
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: {Flip}
+          })
+      }
+     }else{
+      const {data} = await axios.post(backendUrl + 'api/auth/login', {email: formData.email, password: formData.password})
+
+      if(data.success){
+        setIsLoggedIn(true);
+        getUserInfo()
+        navigate('/')
+      }else{
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: {Flip}
+          })
+      }
+     }
         
     } catch (error) {
       toast.error(error.message, {
-        position: "bottom-center",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: false,
