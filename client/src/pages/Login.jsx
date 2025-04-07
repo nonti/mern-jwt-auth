@@ -102,22 +102,22 @@ const Login = () => {
             <>
             <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-gray-600'>
             <FaUser className='text-white' />
-              <input type='text' placeholder='Full name' className='text-white' onChange={handleChange} name='firstname' value={formData.firstname}/>
+              <input type='text' placeholder='Full name' className='text-white  bg-transparent outline-none' onChange={handleChange} name='firstname' value={formData.firstname}/>
           </div>
           <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-gray-600'>
             <FaUser className='text-white' />
-              <input type='text' placeholder='Lastname' className='text-white' onChange={handleChange} name='lastname' value={formData.lastname}/>
+              <input type='text' placeholder='Lastname' className='text-white  bg-transparent outline-none' onChange={handleChange} name='lastname' value={formData.lastname}/>
           </div>
           </>
           )}
           
           <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-gray-600'>
             <MdEmail className='text-white' />
-              <input type='email' placeholder='Email' className='text-white' onChange={handleChange} name='email' value={formData.email}/>
+              <input type='email' placeholder='Email' className='text-white  bg-transparent outline-none' onChange={handleChange} name='email' value={formData.email}/>
           </div>
           <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-gray-600'>
             <MdPassword className='text-white' />
-              <input type='password' placeholder='Password' className='text-white' onChange={handleChange} name='password' value={formData.password}/>
+              <input type='password' placeholder='Password' className='text-white  bg-transparent outline-none' onChange={handleChange} name='password' value={formData.password}/>
           </div>
           {state === 'Sign Up' ? '' : (<p className='mb-4 textind cursor-pointer' onClick={() => navigate('/reset-password')}>Forgot password?</p>)} 
           <button className='w-full py-2.5 rounded-full bg-gradient-to-r from-indigo-300 to-slate-600 font-medium'>{state}</button>
