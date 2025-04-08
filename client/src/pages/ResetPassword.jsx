@@ -11,10 +11,10 @@ const ResetPassword = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('')
-  const [isEmailSent, setIsEmailSent] = useState('')
+  const [isEmailSent, setIsEmailSent] = useState(false)
   const [otp, setOtp] = useState(0)
   const [isOtpSubmitted, setIsOtpSubmitted] = useState(false)
-  const inputRefs = useRef([]);
+  const inputRefs = useRef(Array(6).fill(null));
   
   const handleEmailChange = (e) => {
     setEmail(e.target.value)
@@ -50,12 +50,30 @@ const ResetPassword = () => {
   const handleSubmitEmail = async(e)  => {
     try {
       e.preventDefault();
-      const {data} = await axios.post(backendUrl, +'api/auth/send-reset-otp')
-      data.success ? toast.success(data.message,{ position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: true, draggable: true, progress: undefined, theme: "light", transition: {Flip}}) : 
-                    toast.error(data.message, {position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: true, draggable: true, progress: undefined, theme: "light", transition: {Flip}})
+      const {data} = await axios.post(backendUrl +'api/auth/send-reset-otp', {email})
+      data.success ? toast.success(data.message,{ position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: true, draggable: true, progress: undefined, theme: "light", transition: Flip}) : 
+                    toast.error(data.message, {position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: true, draggable: true, progress: undefined, theme: "light", transition: Flip})
       data.success && setIsEmailSent(true)
     } catch (error) {
-      toast.error(error.message, { position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: true, draggable: true, progress: undefined, theme: "light", transition: {Flip}})
+      toast.error(error.message, { position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: true, draggable: true, progress: undefined, theme: "light", transition: Flip})
+    }
+  }
+
+  const handleResetOtpSubmit = async (e) => {
+    e.preventDefault();
+    const otpArray = inputRefs.current.map(e => e.value)
+    setOtp(otpArray.join(''))
+    setIsOtpSubmitted(true)
+  }
+
+  const handleSubmitNewPassword = async (e) => {
+    e.preventDefault();
+    try {
+      const {data} = await axios.post(backendUrl + 'api/auth/reset-password', {email, otp, newPassword})
+      data.success ? toast.success(data.message) : toast.error(data.message)
+      data.success && navigate('/login')
+    } catch (error) {
+      toast.error(error.message)
     }
   }
   return (
@@ -75,7 +93,7 @@ const ResetPassword = () => {
       }
         {/**Otp Form */}
         {!isOtpSubmitted && isEmailSent &&
-        <form className='bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm' >
+        <form className='bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm' onSubmit={handleResetOtpSubmit} >
           <h1 className='text-white text-2xl font-semibold text-center mb-4'>Reset Password OTP</h1>
           <p className='text-indigo-400 text-center mb-6'>Enter 6-digit code sent to your email id.</p>
           <div className='flex justify-between mb-8' onPaste={handlePaste}>
@@ -94,7 +112,7 @@ const ResetPassword = () => {
 }
         {/** New password */}
         {isOtpSubmitted  && isEmailSent && 
-        <form className='bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm'>
+        <form onSubmit={handleSubmitNewPassword} className='bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm'>
           <h1 className='text-white text-2xl font-semibold text-center mb-4'>New Password</h1>
           <p className='text-indigo-400 text-center mb-6'>Enter new password below.</p>
           <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-gray-500'>  

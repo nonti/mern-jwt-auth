@@ -28,7 +28,7 @@ export const AppContextProvider = (props) => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        transition: {Flip}
+        transition: Flip
       })
     }
   }
